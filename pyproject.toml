@@ -1,0 +1,21 @@
+[project]
+name = "x-simulator"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    { name = "Panaintescu Adrian Valentin", email = "adrian.cert@gmail.com" },
+]
+dependencies = [
+    "intervaltree>=3.1.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.ruff.lint]
+extend-select = ["C", "N", "SIM", "PTH", "I", "PL", "FURB"]
+
