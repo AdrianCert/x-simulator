@@ -1,5 +1,7 @@
 import abc
 
+from x_simulator.core import processor
+
 
 class InstructionSetMeta(abc.ABCMeta):
     """Metaclass for registering classes in a registry."""
@@ -29,9 +31,9 @@ class InstructionSetMeta(abc.ABCMeta):
 class InstructionSet:
     """Base class for instruction sets."""
     instruction_set = {}
+    context: processor.ProcessorBase
 
     def __init__(self, context=None):
-        pass
         self.context = context
 
     def get_instruction(self, instruction_name):
