@@ -5,10 +5,8 @@ description = "Default template for PDM package"
 authors = [
     { name = "Panaintescu Adrian Valentin", email = "adrian.cert@gmail.com" },
 ]
-dependencies = [
-    "intervaltree>=3.1.0",
-]
-requires-python = ">=3.11"
+dependencies = ["intervaltree>=3.1.0"]
+requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
 
@@ -18,4 +16,3 @@ build-backend = "pdm.backend"
 
 [tool.ruff.lint]
 extend-select = ["C", "N", "SIM", "PTH", "I", "PL", "FURB"]
-
