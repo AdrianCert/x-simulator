@@ -4,8 +4,10 @@ version = "0.1.0"
 description = "Default template for PDM package"
 authors = [
     { name = "Panaintescu Adrian Valentin", email = "adrian.cert@gmail.com" },
+    { name = "Petrache Liviu Andrei", email = "petrache.andrei1@gmail.com" },
+    { name = "Neculea Mihaela", email = "mneculea@yahoo.com" },
 ]
-dependencies = ["intervaltree>=3.1.0"]
+dependencies = ["intervaltree>=3.1.0", "lark>=1.1.9"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
