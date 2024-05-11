@@ -93,16 +93,14 @@ class AssemblyTransformer(Transformer):
 
 class AssemblyParser:
     """
-    This class is responsible for parsing make files (a subset of grammar is available)
+    This class is responsible for parsing assembly code.
 
-    The `MakeParser` class provides methods for loading and parsing make files. It uses
-    a grammar to define the syntax of the make file and a parser to parse the make
-    file contents.
-
+    The `AssemblyParser` class provides methods for loading and parsing assembly code source files. It uses
+    a grammar to define the syntax of the asm language and a parser to parse the source code.
     Example:
 
         >>> parser = AssemblyParser()
-        >>> result = parser.load('Makefile')
+        >>> result = parser.load('source.asm')
 
     """
 
