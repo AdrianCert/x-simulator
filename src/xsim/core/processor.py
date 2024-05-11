@@ -1,7 +1,7 @@
 import abc
 import typing
 
-from x_simulator.core import memory
+from xsim.core import memory
 
 
 class ProcessorRegister:
@@ -58,7 +58,7 @@ class ProcessorRegisters:
             if register not in self.registers_addr:
                 return None
             register = self.registers_addr[register]
-        return self.resisters[register]
+        return self.resisters[register.lower()]
 
     def __getitem__(self, item: typing.Union[int, str]):
         return self.take(item).get()
@@ -72,10 +72,12 @@ class ProcessorBase:
 
     def __init__(self, rom_size: int, registers_spec: dict, flags_names=None):
         self.memory = memory.Memory(rom_size)
+        self.registers_sizes = dict(registers_spec["registers"])
         self.registers = self.make_registers_space(registers_spec)
         self.flags_mask = {
             flag: 2**i for i, flag in enumerate(reversed(flags_names) or [])
         }
+        self.halt = False
 
     def make_registers_space(self, registers_spec: dict):
         memory_mapped_start, memory_mapped_stop = registers_spec.get(
@@ -105,8 +107,10 @@ class ProcessorBase:
         self.executors = self.execute()
         while True:
             try:
-                next(self.executors)
+                nfo = next(self.executors)
             except StopIteration:
                 break
             if self.dbc:
-                self.dbc(self)
+                self.dbc(self, nfo)
+            if self.halt:
+                break

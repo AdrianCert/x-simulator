@@ -69,11 +69,9 @@ class Memory:
         if trace is None:
             trace = [id(self)]
 
-        for item in (
-            itertools.chain(
-                zip(itertools.repeat("subset"), self.sub_views[address]),
-                [("parent", (self.parent, self.offset) if self.parent else None)],
-            )
+        for item in itertools.chain(
+            zip(itertools.repeat("subset"), self.sub_views[address]),
+            [("parent", (self.parent, self.offset) if self.parent else None)],
         ):
             i_kind, _value = item
             if i_kind == "subset":
@@ -120,14 +118,19 @@ class MemoryView(Memory):
         self.parent = memory
         self.offset = address
 
+
 if __name__ == "__main__":
     ram = Memory(256)
     memory = ram.view(0x10, 0x10)
+
     def on_write(address, values):
         print(f"Write at {address}: {values}")
+
     memory.on_write(on_write)
+
     def on_read(address, size):
         print(f"Read at {address}: {size}")
+
     memory.on_read(on_read)
     ram.on_read(on_read)
     print(ram.dump())

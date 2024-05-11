@@ -2,7 +2,7 @@ import msvcrt
 import os
 import time
 
-from x_simulator.core import memory
+from xsim.core import memory
 
 TOTAL_MEMORY = 1024
 VIDEO_H_SIZE = 0x30
@@ -37,7 +37,7 @@ class Blinker:
     def update_last_key(self, address, value):
         if address != self.cursor:
             return
-        if value[0] not in [self.prev_key, self.chr_placeholder]:
+        if value[0] not in {self.prev_key, self.chr_placeholder}:
             self.prev_key = value[0]
 
     def blink(self, cursor):
@@ -69,12 +69,12 @@ class EditorApp:
 
     def fill(self, value: str):
         for i in range(VIDEO_MEMORY_SIZE):
-            video_memory.write(i, value.encode("utf-8")[0])
+            self.memory.write(i, value.encode("utf-8")[0])
 
     def render(self, address=0, values=0):
         clear_screen()
         print("/", "-" * VIDEO_H_SIZE, "\\", sep="")
-        stream = video_memory.mv.tobytes().decode("utf-8")
+        stream = self.memory.mv.tobytes().decode("utf-8")
         s_rows = [
             stream[i : i + VIDEO_H_SIZE] for i in range(0, len(stream), VIDEO_H_SIZE)
         ]
