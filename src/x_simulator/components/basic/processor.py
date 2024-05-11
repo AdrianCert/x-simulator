@@ -1,21 +1,24 @@
-from x_simulator.components.basic import instructions
-from x_simulator.core import processor
+from x_simulator.components.basic.instructions import BaseInstruction
+from x_simulator.core import asm_parser, processor
 
 
 class BasicProcessor(processor.ProcessorBase):
-    def __init__(self, rom_size: int, registers_spec: dict, program_data, flags_names):
+    def __init__(self, rom_size: int, registers_spec: dict, flags_names):
         super().__init__(rom_size, registers_spec, flags_names=flags_names)
+        self.program_data = []
+        self.instruction_set = BaseInstruction()
+
+    def update_program(self, program_data):
         self.program_data = program_data
-        self.instruction_set = instructions.InstructionSet()
 
     def execute_instruction(self, instruction_data):
-        instruction: instructions.InstructionSet = self.instruction_set.get_instruction(
+        instruction: BaseInstruction = self.instruction_set.get_instruction(
             instruction_data["name"]
         )
         instruction.execute(self, **instruction_data["params"])
 
     def execute(self):
-        self.pc = self.registers.take("PC")
+        self.pc = self.registers.take("pc")
         while True:
             current_address = self.pc.get()
             if self.pc.get() >= len(self.program_data):
@@ -27,60 +30,48 @@ class BasicProcessor(processor.ProcessorBase):
 
 
 if __name__ == "__main__":
-
     registers_spec = {
         "memory_mapped": [0, 16],
         "registers": [
-            ("R1", 2),
-            ("R2", 2),
-            ("R3", 2),
-            ("R4", 2),
-            ("R5", 2),
-            ("R6", 2),
-            ("R7", 2),
-            ("R8", 2),
-            ("PC", 2),
-            ("IR", 2),
-            ("MAR", 2),
-            ("MDR", 2),
-            ("SP", 2),
-            ("SR", 2),
-            ("LR", 2),
-            ("SREG", 1),
+            ("r0", 2),
+            ("r1", 2),
+            ("r2", 2),
+            ("r3", 2),
+            ("r4", 2),
+            ("r5", 2),
+            ("r6", 2),
+            ("r7", 2),
+            ("pc", 2),
+            ("ir", 2),
+            ("mar", 2),
+            ("mdr", 2),
+            ("sp", 2),
+            ("sr", 2),
+            ("lr", 2),
+            ("sreg", 1),
         ],
     }
 
     proc = BasicProcessor(
-        20,
+        2048 * 2,
         registers_spec,
-        program_data=[
-            {
-                "name": "MOV",
-                "params": {
-                    "source": ["CONST", 0x10],
-                    "destination": ["REG", "R1"],
-                },
-            },
-            {
-                "name": "MOV",
-                "params": {
-                    "source": ["CONST", 0x20],
-                    "destination": ["REG", "R2"],
-                },
-            },
-            {
-                "name": "ADD",
-                "params": {
-                    "source": ["REG", "R1"],
-                    "destination": ["REG", "R2"],
-                },
-            },
-        ],
-        flags_names=['I', 'T', 'H', 'S', 'V', 'P', 'Z', 'C'],
+        flags_names=["I", "T", "H", "S", "V", "P", "Z", "C"],
     )
 
-    def debugger(processor: BasicProcessor):
-        print(f"PC: {processor.registers['PC']}")
+    print(sorted(proc.instruction_set.get_instruction_names()))
+
+    program = asm_parser.AssemblyParser.load(
+        # "program.s",
+        "tests/source.asm",
+        register_names=list(zip(*registers_spec["registers"]))[0],
+    )
+    proc.update_program(program)
+
+    def debugger(processor: BasicProcessor, extra=None):
+        # if processor.registers['PC'] not in [2]:
+        #     return
+        print(f"PC: {processor.registers['pc']}")
+        print(f"R0: {processor.registers['R0']}")
         print(f"R1: {processor.registers['R1']}")
         print(f"R2: {processor.registers['R2']}")
         print(f"R3: {processor.registers['R3']}")
@@ -88,7 +79,6 @@ if __name__ == "__main__":
         print(f"R5: {processor.registers['R5']}")
         print(f"R6: {processor.registers['R6']}")
         print(f"R7: {processor.registers['R7']}")
-        print(f"R8: {processor.registers['R8']}")
         print(f"IR: {processor.registers['IR']}")
         print(f"MAR: {processor.registers['MAR']}")
         print(f"MDR: {processor.registers['MDR']}")
@@ -96,7 +86,7 @@ if __name__ == "__main__":
         print(f"SR: {processor.registers['SR']}")
         print(f"LR: {processor.registers['LR']}")
         print(f"SREG: {processor.registers['SREG']}")
-        print(processor.memory.dump())
+        # print(processor.memory.dump())
         print("")
 
     proc.attach_debugger(debugger)

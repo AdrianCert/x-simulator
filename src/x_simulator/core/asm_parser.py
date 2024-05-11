@@ -113,7 +113,36 @@ class AssemblyParser:
         | instruction_name operand "," operand
 
         instruction_name: INSTRUCTION
-        INSTRUCTION: "MOV" | "ADD" | "SUB" | "MUL" | "DIV" | "JMP" | "JZ" | "JNZ" | "JG" | "JL" | "JGE" | "JLE" | "CALL" | "RET" | "NOP"
+        INSTRUCTION: "NOP"
+            | "ADD"
+            | "AND"
+            | "CALL"
+            | "CMP"
+            | "DEC"
+            | "DIV"
+            | "HALT"
+            | "INC"
+            | "JEQ"
+            | "JG"
+            | "JGE"
+            | "JL"
+            | "JLE"
+            | "JMP"
+            | "JNE"
+            | "JNZ"
+            | "JZ"
+            | "MOV"
+            | "MUL"
+            | "NOT"
+            | "OR"
+            | "POP"
+            | "PUSH"
+            | "RET"
+            | "SHL"
+            | "SHR"
+            | "SUB"
+            | "XOR"
+
         operand: addr | const | reg
 
         expr: term

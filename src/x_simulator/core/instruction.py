@@ -30,6 +30,7 @@ class InstructionSetMeta(abc.ABCMeta):
 
 class InstructionSet:
     """Base class for instruction sets."""
+
     instruction_set = {}
     context: processor.ProcessorBase
 
@@ -47,4 +48,3 @@ class InstructionSet:
         if instruction is None:
             raise ValueError(f"Unknown instruction: {instruction_name}")
         return instruction.execute(self.context, kwargs)
-
