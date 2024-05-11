@@ -178,22 +178,14 @@ class AssemblyParser:
         return cls.Grammar.parse(text=text, **kwargs)
 
     @classmethod
-    def load(cls, fp: typing.Union[str, Path, typing.TextIO], **kwargs):
-        if isinstance(fp, str):
-            fp = Path(fp)
-        if isinstance(fp, Path):
-            fp = fp.open("r")
-        return cls.loads(fp.read(), **kwargs)
+    def load(cls, file: typing.Union[str, Path, typing.TextIO], **kwargs):
+        if isinstance(file, str):
+            file = Path(file)
+        if isinstance(file, Path):
+            file = file.open("r")
+        return cls.loads(file.read(), **kwargs)
 
-
-test_prg = """MOV 0x10
-NOP
-MOV [100]
-DIV [r1], 0xFF
-JMP [r2]
-MOV [r2 + 0x10],0x11
-"""
 
 if __name__ == "__main__":
-    parser = AssemblyParser.loads(test_prg, register_names=["r1", "r2"])
+    parser = AssemblyParser.load("tests/source.asm", register_names=["r1", "r2"])
     print(*parser, sep="\n")
