@@ -1,6 +1,6 @@
 import abc
 
-from x_simulator.core import processor
+from xsim.core import processor
 
 
 class InstructionSetMeta(abc.ABCMeta):

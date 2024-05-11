@@ -1,5 +1,5 @@
-from x_simulator.components.basic.instructions import BaseInstruction
-from x_simulator.core import asm_parser, processor
+from xsim.components.basic.instructions import BaseInstruction
+from xsim.core import asm_parser, processor
 
 
 class BasicProcessor(processor.ProcessorBase):
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         print(f"LR: {processor.registers['LR']}")
         print(f"SREG: {processor.registers['SREG']}")
         # print(processor.memory.dump())
-        print("")
+        print()
 
     proc.attach_debugger(debugger)
 

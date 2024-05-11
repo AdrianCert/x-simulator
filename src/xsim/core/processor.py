@@ -1,7 +1,7 @@
 import abc
 import typing
 
-from x_simulator.core import memory
+from xsim.core import memory
 
 
 class ProcessorRegister:

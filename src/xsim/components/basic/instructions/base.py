@@ -1,6 +1,6 @@
 import typing
 
-from x_simulator.core import instruction, processor
+from xsim.core import instruction, processor
 
 
 class BaseInstruction(

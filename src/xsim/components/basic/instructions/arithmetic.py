@@ -1,4 +1,4 @@
-from x_simulator.core import const, processor
+from xsim.core import const, processor
 
 from .base import BaseInstruction
 

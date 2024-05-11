@@ -1,4 +1,4 @@
-from x_simulator.core import processor
+from xsim.core import processor
 
 from .base import BaseInstruction
 

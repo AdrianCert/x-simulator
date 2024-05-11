@@ -109,8 +109,8 @@ class AssemblyParser:
         start: instructions
         instructions: (instruction NEWLINE)* instruction NEWLINE*
         instruction: instruction_name
-        | instruction_name operand
-        | instruction_name operand "," operand
+            | instruction_name operand
+            | instruction_name operand "," operand
 
         instruction_name: INSTRUCTION
         INSTRUCTION: "NOP"
@@ -163,15 +163,8 @@ class AssemblyParser:
         reg: /[a-z]+[0-9]*/
         addr: "[" (const | reg | expr) "]"
 
-        %import common.LETTER
-        %import common.UCASE_LETTER
-        %import common.LCASE_LETTER
-        %import common.DIGIT
         %import common.WS_INLINE
-        %import common.NUMBER
-        %import common.HEXDIGIT
         %import common.NEWLINE
-
         %ignore WS_INLINE
         """
 
