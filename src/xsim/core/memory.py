@@ -10,6 +10,7 @@ class Memory:
         size: int,
         endianess: str = "big",
         memory: typing.Optional[typing.Union[memoryview, bytearray]] = None,
+        origin=None,
     ):
         self.size = size
         self.endianess = endianess
@@ -18,6 +19,10 @@ class Memory:
         self.mv = memoryview(self.data)
         self.sub_views = intervaltree.IntervalTree()
         self.parent: typing.Optional[typing.Tuple[Memory, int]] = None
+        self.origin = origin
+        self.restricts = {
+            "access_at_time": intervaltree.IntervalTree(),
+        }
 
     def validate_address(self, address: int, size: int = 1):
         if address < 0 or address >= self.size:
@@ -25,15 +30,37 @@ class Memory:
         if address + size > self.size:
             raise ValueError(f"Invalid address range: {address} - {address + size}")
 
-    def view(self, address: int, size: int = 1) -> "Memory":
+    def get_limit_access_at_time(self, address, size: int = 1) -> int:
+        bound = self.restricts["access_at_time"].overlap(address, address + size)
+        if not bound:
+            return size
+        interval = bound.pop()
+        limit = interval.data
+        if limit < size:
+            return limit
+        return size
+
+    def limit_access_at_time(self, address: int = 0, size: int = None):
+        size = size or self.size
+        if self.parent:
+            return self.parent.limit_access_at_time(address + self.offset, size)
+
+        self.restricts["access_at_time"][address : address + size] = size
+
+    def view(
+        self, address: int, size: int = 1, restrict_access_at_time=None
+    ) -> "Memory":
         self.validate_address(address, size)
-        memory_view = MemoryView(self, address, size)
+        memory_view = MemoryView(self, address, size, origin=self.origin)
+        if restrict_access_at_time:
+            memory_view.limit_access_at_time(0, restrict_access_at_time)
         self.sub_views[address : address + size] = memory_view
         return memory_view
 
     def read(self, address: int, size: int = 1) -> int:
         self.validate_address(address, size)
         self.on_read_hook(address, size)
+        size = self.get_limit_access_at_time(address, size)
         if size == 1:
             return self.data[address]
         else:
@@ -100,10 +127,12 @@ class Memory:
         return iter(self.mv)
 
     def write(self, address: int, value: int, size: int = 1):
+        size = self.get_limit_access_at_time(address, size)
+
         self.validate_address(address, size)
         bytes = value.to_bytes(size, self.endianess)
         bytes_len = len(bytes)
-        if bytes == 1:
+        if bytes_len == 1:
             self.data[address] = value
         else:
             self.data[address : address + bytes_len] = bytes
@@ -111,9 +140,12 @@ class Memory:
 
 
 class MemoryView(Memory):
-    def __init__(self, memory: Memory, address: int, size: int):
+    def __init__(self, memory: Memory, address: int, size: int, origin):
         super().__init__(
-            size, memory.endianess, memory=memory.mv[address : address + size]
+            size,
+            memory.endianess,
+            memory=memory.mv[address : address + size],
+            origin=origin,
         )
         self.parent = memory
         self.offset = address

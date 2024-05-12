@@ -1,4 +1,7 @@
+DB 0x100, "Hello, World!"
 MOV r1, 0x14
+MOV r7, 0x100
+MOV [r7], 0x20
 MOV r2, 0x02
 MOV [r1], r2
 DIV [r1], r2

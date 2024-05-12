@@ -21,34 +21,42 @@ class ProcessorRegister:
 
 
 class ProcessorRegisters:
-    def __init__(self, memory_view: memory.MemoryView, labels=None):
+    def __init__(self, memory_view: memory.MemoryView, registers=None):
         self.memory = memory_view or memory.Memory(32)
         self.resisters = {}
         self.registers_addr = {}
         current_address = 0
         left_space = self.memory.size
         left_mapped = 0
-        for seq, (label, size) in enumerate(labels):
+        for seq, register in enumerate(registers or []):
+            label = register["name"]
+            size = register["size"]
             if size > left_space:
                 left_mapped = seq
                 break
             self.resisters[label] = ProcessorRegister(
                 label, size, self.memory.view(current_address, size)
             )
+            if "default" in register:
+                self.resisters[label].set(register["default"])
             self.registers_addr[current_address] = label
             current_address += size
             left_space -= size
 
         if left_mapped:
-            unmapped_labels = labels[left_mapped:]
+            unmapped_registers = registers[left_mapped:]
             self.unmapped_memory = memory.Memory(
-                sum(size for _, size in unmapped_labels)
+                sum(reg["size"] for reg in unmapped_registers)
             )
             current_address = 0
-            for label, size in unmapped_labels:
+            for register in unmapped_registers:
+                label = register["name"]
+                size = register["size"]
                 self.resisters[label] = ProcessorRegister(
                     label, size, self.unmapped_memory.view(current_address, size)
                 )
+                if "default" in register:
+                    self.resisters[label].set(register["default"])
                 current_address += size
 
     def take(
@@ -72,7 +80,9 @@ class ProcessorBase:
 
     def __init__(self, rom_size: int, registers_spec: dict, flags_names=None):
         self.memory = memory.Memory(rom_size)
-        self.registers_sizes = dict(registers_spec["registers"])
+        self.registers_sizes = {
+            item["name"]: item["size"] for item in registers_spec["registers"]
+        }
         self.registers = self.make_registers_space(registers_spec)
         self.flags_mask = {
             flag: 2**i for i, flag in enumerate(reversed(flags_names) or [])
@@ -88,7 +98,7 @@ class ProcessorBase:
             memory_mapped = self.memory.view(memory_mapped_start, memory_mapped_size)
         else:
             memory_mapped = memory.Memory(0)
-        return ProcessorRegisters(memory_mapped, labels=registers_spec["registers"])
+        return ProcessorRegisters(memory_mapped, registers=registers_spec["registers"])
 
     def attach_debugger(self, dbc):
         self.dbc = dbc
@@ -100,8 +110,7 @@ class ProcessorBase:
         self.dbc = None
 
     @abc.abstractmethod
-    def execute(self):
-        ...
+    def execute(self): ...
 
     def run(self):
         self.executors = self.execute()

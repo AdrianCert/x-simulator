@@ -52,6 +52,10 @@ class AssemblyTransformer(Transformer):
         return factor
 
     @v_args(inline=True)
+    def string(self, string):
+        return "STRING", string[1:-1]
+
+    @v_args(inline=True)
     def operand(self, operand):
         return operand
 
@@ -142,8 +146,9 @@ class AssemblyParser:
             | "SHR"
             | "SUB"
             | "XOR"
+            | "DB"
 
-        operand: addr | const | reg
+        operand: addr | const | reg | string
 
         expr: term
             | expr "+" term   -> add
@@ -157,6 +162,7 @@ class AssemblyParser:
             | "(" expr ")"
             | reg
 
+        string: ESCAPED_STRING
         const: numerical_hex | numerical_dec
         numerical_hex: /0[Xx][0-9a-fA-F]+/
         numerical_dec: /[1-9][0-9]*/
@@ -165,6 +171,7 @@ class AssemblyParser:
 
         %import common.WS_INLINE
         %import common.NEWLINE
+        %import common.ESCAPED_STRING
         %ignore WS_INLINE
         """
 
