@@ -1,0 +1,62 @@
+site_name: X-Simulator
+repo_url: https://sourcecode02.de.bosch.com/projects/ASIOS/repos/auto-spdx-generator/
+repo_name: ASIOS/auto-spdx-generator
+
+markdown_extensions:
+  - admonition
+  - meta
+  # - plantuml_markdown
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tasklist
+  - pymdownx.superfences
+  - pymdownx.progressbar
+  - pymdownx.magiclink
+  - markdown.extensions.attr_list
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/bitbucket
+  features:
+    - toc.follow
+    # - toc.integrate
+    - navigation.top
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - navigation.path
+    - navigation.sections
+    - navigation.expand
+
+  palette:
+    - scheme: default
+      primary: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      toggle:
+        icon: material/brightness-3
+        name: Switch to light mode
+
+nav:
+  - Home:
+    - Overview: index.md
+    - Changelog: changelog.md
+  - ...
+
+plugins:
+  - search
+  - awesome-pages
+  - kroki:
+      FencePrefix: ""
+      FileTypes: [png, svg]
+  - offline
