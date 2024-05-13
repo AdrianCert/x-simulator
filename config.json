@@ -1,0 +1,88 @@
+{
+    "memory_size": 2048,
+    "clock_speed": 60,
+    "registers_spec": {
+        "memory_mapped": [0, 16],
+        "registers": [
+            {
+                "name": "r0",
+                "size": 2,
+                "description": "General purpose register 0",
+                "default": 0
+            },
+            {
+                "name": "r1",
+                "size": 2,
+                "description": "General purpose register 1",
+                "default": 0
+            },
+            {
+                "name": "r2",
+                "size": 2,
+                "description": "General purpose register 2",
+                "default": 0
+            },
+            {
+                "name": "r3",
+                "size": 2,
+                "description": "General purpose register 3",
+                "default": 0
+            },
+            {
+                "name": "r4",
+                "size": 2,
+                "description": "General purpose register 4",
+                "default": 0
+            },
+            {
+                "name": "r5",
+                "size": 2,
+                "description": "General purpose register 5",
+                "default": 0
+            },
+            {
+                "name": "r6",
+                "size": 2,
+                "description": "General purpose register 6",
+                "default": 0
+            },
+            {
+                "name": "r7",
+                "size": 2,
+                "description": "General purpose register 7",
+                "default": 0
+            },
+            {
+                "name": "pc",
+                "size": 2,
+                "description": "Program counter",
+                "default": 0
+            },
+            {
+                "name": "sp",
+                "size": 2,
+                "description": "Stack pointer",
+                "default": 0
+            },
+            {
+                "name": "sreg",
+                "size": 1,
+                "description": "Flags register",
+                "default": 0
+            },
+            {
+                "name": "ir",
+                "size": 2,
+                "description": "Instruction register",
+                "default": 0
+            }
+        ]
+    },
+    "flags_names": ["C", "Z", "N", "V"],
+    "video_memory_size": 300,
+    "video_memory_location": 256,
+    "video_memory_w_size": 30,
+    "video_memory_h_size": 10,
+    "keyboard_memory_location": 255,
+    "program_path": "./tests/source.asm"
+}

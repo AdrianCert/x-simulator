@@ -5,11 +5,12 @@ description = "simple simultor for asm programs"
 authors = [
     { name = "Panaintescu Adrian Valentin", email = "adrian.cert@gmail.com" },
     { name = "Petrache Liviu Andrei", email = "petrache.andrei1@gmail.com" },
-    { name = "Neculea Mihaela", email = "mneculea@yahoo.com" },
+    { name = "Neculea Mihaela", email = "m.neculea@yahoo.com" },
 ]
 dependencies = [
     "intervaltree>=3.1.0",
     "lark>=1.1.9",
+    "textual[syntax]>=0.59.0",
     "mkdocs>=1.6.0",
     "mkdocs-awesome-pages-plugin>=2.9.2",
     "mkdocs-kroki-plugin>=0.7.1",
@@ -19,6 +20,13 @@ dependencies = [
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=3.7.1",
+    "ruff>=0.4.4",
+    "textual-dev>=1.5.1",
+]
 
 [build-system]
 requires = ["pdm-backend"]

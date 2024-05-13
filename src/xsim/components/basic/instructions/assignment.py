@@ -22,3 +22,25 @@ class Mov(BaseInstruction):
             return
 
         raise ValueError(f"Unknown destination type: {destination_type}")
+
+
+class Db(BaseInstruction):
+    instruction_name = "DB"
+
+    @classmethod
+    def execute(cls, context: processor.ProcessorBase, destination, source):
+        address = cls.resolve_operand(context, *destination, size=1)
+
+        source_type, source = source
+
+        if source_type == "CONST":
+            context.memory.write(address, source, size=1)
+            return
+
+        if source_type == "STRING" and isinstance(source, str):
+            source = source.encode("utf-8")
+            for offset, byte in enumerate(source):
+                context.memory.write(address + offset, byte)
+            return
+
+        raise ValueError(f"Incorrect source type: {source} ({type(source)})")

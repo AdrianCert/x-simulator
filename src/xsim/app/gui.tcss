@@ -1,0 +1,42 @@
+/*
+Screen {
+    layout: grid;
+    grid-size: 3 2;
+}
+
+.box {
+    height: 100%;
+    border: solid green;
+}
+
+dScreen {
+    layout: grid;
+    grid-size: 8;
+    grid-gutter: 1;
+}
+    grid-gutter: 1;
+*/
+
+#main {
+    layout: grid;
+    grid-size: 6;
+    grid-columns: 2fr 2fr;
+}
+
+#main > * {
+    height: 100%;
+    column-span: 3;
+}
+
+#editor {
+    column-span: 2;
+}
+
+#display {
+    column-span: 4;
+}
+
+.box {
+    background: darkmagenta;
+    height: 100%;
+}
