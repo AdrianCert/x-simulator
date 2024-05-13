@@ -3,6 +3,7 @@ MOV r1, 0x14
 MOV r7, 0x100
 MOV [r7], 0x20
 MOV r2, 0x02
+MOV [0x102], [0xff]
 MOV [r1], r2
 DIV [r1], r2
 MOV sp, 0x4f
@@ -13,6 +14,13 @@ NOP
 NOP
 MOV r6, 0x07
 MOV r7, 0x08
+RET
+NOP
+NOP
+MOV r7, 0xff
+MOV r6, [0x108]
+MOV r5, [r7]
+MOV [r6], r5
 RET
 MOV [100], 0xFF
 JMP [r2]

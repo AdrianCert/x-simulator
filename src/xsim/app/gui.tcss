@@ -28,12 +28,18 @@ dScreen {
     column-span: 3;
 }
 
+#left {
+    column-span: 4;
+}
+
 #editor {
     column-span: 2;
+    height: 100%;
 }
 
 #display {
     column-span: 4;
+    height: 90%;
 }
 
 .box {

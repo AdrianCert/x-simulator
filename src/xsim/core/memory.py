@@ -40,12 +40,12 @@ class Memory:
             return limit
         return size
 
-    def limit_access_at_time(self, address: int = 0, size: int = None):
+    def limit_access_at_time(self, address: int = 0, size: int = None, limit: int = 1):
         size = size or self.size
         if self.parent:
             return self.parent.limit_access_at_time(address + self.offset, size)
 
-        self.restricts["access_at_time"][address : address + size] = size
+        self.restricts["access_at_time"][address : address + size] = limit
 
     def view(
         self, address: int, size: int = 1, restrict_access_at_time=None
@@ -53,7 +53,9 @@ class Memory:
         self.validate_address(address, size)
         memory_view = MemoryView(self, address, size, origin=self.origin)
         if restrict_access_at_time:
-            memory_view.limit_access_at_time(0, restrict_access_at_time)
+            memory_view.limit_access_at_time(
+                address=0, size=size, limit=restrict_access_at_time
+            )
         self.sub_views[address : address + size] = memory_view
         return memory_view
 

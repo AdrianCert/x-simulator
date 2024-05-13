@@ -4,12 +4,13 @@ import json
 import typing
 from pathlib import Path
 
+from textual import on
 from textual.app import App, ComposeResult
-from textual.containers import Container
+from textual.containers import Container, Vertical
 from textual.message import Message
 from textual.reactive import reactive
 from textual.widget import Widget
-from textual.widgets import Button, Footer, TextArea
+from textual.widgets import Footer, Input, Label, TextArea
 from textual.widgets.text_area import Selection
 
 from xsim.components.basic.processor import BasicProcessor
@@ -133,52 +134,56 @@ class AppConfiguration:
 class KeyboardComponent(Widget):
     DEFAULT_CSS = """
     KeyboardComponent {
-        layout: grid;
-        grid-size: 10;
-    }
-
-    Button {
-        width: 2;
-        height: 2;
+        content-align: center middle;
     }
     """
 
-    def compose(self) -> ComposeResult:
-        with Container(id="keyboard"):
-            yield Button("q", id="q", classes="key")
-            yield Button("w", id="w", classes="key")
-            yield Button("e", id="e", classes="key")
-            yield Button("r", id="r", classes="key")
-            yield Button("t", id="t", classes="key")
-            yield Button("y", id="y", classes="key")
-            yield Button("u", id="u", classes="key")
-            yield Button("i", id="i", classes="key")
-            yield Button("o", id="o", classes="key")
-            yield Button("p", id="p", classes="key")
-            yield Button("a", id="a", classes="key")
-            yield Button("s", id="s", classes="key")
-            yield Button("d", id="d", classes="key")
-            yield Button("f", id="f", classes="key")
-            yield Button("g", id="g", classes="key")
-            yield Button("h", id="h", classes="key")
-            yield Button("j", id="j", classes="key")
-            yield Button("k", id="k", classes="key")
-            yield Button("l", id="l", classes="key")
-            yield Button("^", id="up", classes="key", variant="primary")
-            yield Button("z", id="z", classes="key")
-            yield Button("x", id="x", classes="key")
-            yield Button("c", id="c", classes="key")
-            yield Button("v", id="v", classes="key")
-            yield Button("b", id="b", classes="key")
-            yield Button("n", id="n", classes="key")
-            yield Button("m", id="m", classes="key")
-            yield Button("<", id="left", classes="key", variant="primary")
-            yield Button("v", id="down", classes="key", variant="primary")
-            yield Button(">", id="right", classes="key", variant="primary")
+    preview = reactive("")
 
-    # def on_key(self, event: events.Key) -> None:
-    #     print(event.key)
-    #     pass
+    def __init__(
+        self,
+        memory_map: memory.MemoryView,
+        buffer_size: int = 10,
+        **kwargs,
+    ) -> None:
+        super().__init__(**kwargs)
+        self.cursor = -1
+        self.read_cursor = -1
+        self.buffer_size = buffer_size
+        self.buffer = bytearray([0x20] * self.buffer_size)
+        self.memory_map = memory_map
+        self.preview = self.buffer.decode("utf-8")
+
+    def setup_memory_map(self):
+        self.memory_map.on_read(self.on_memory_read)
+
+    def on_memory_read(self, address: int, value: int) -> None:
+        self.read_cursor = (self.read_cursor + 1) % self.buffer_size
+        self.memory_map.write(0, self.buffer[self.read_cursor])
+
+    def compose(self) -> ComposeResult:
+        label_value = "keyboard buffer: " + self.preview
+        yield Label(label_value, id="keyboard_label")
+        yield Input(placeholder="Type here", id="keyboard_input")
+
+    @on(Input.Changed)
+    def on_input(self, event: Input.Changed) -> None:
+        byte = event.value.encode("utf-8")
+        if not byte:
+            return
+        byte = byte[0]
+
+        self.query_one(Input).clear()
+        self.cursor = (self.cursor + 1) % self.buffer_size
+        self.buffer[self.cursor] = byte
+
+        if self.read_cursor == -1:
+            self.read_cursor = 0
+            self.memory_map.write(0, self.buffer[self.cursor])
+
+        self.preview = self.buffer.decode("utf-8")
+        label = self.query_one(Label)
+        label.update("keyboard buffer: " + self.preview)
 
 
 class DisplayComponent(Widget):
@@ -285,7 +290,9 @@ class Simulator(App):
         )
 
         with Container(id="main"):
-            yield display
+            with Vertical(id="left"):
+                yield display
+                yield KeyboardComponent(self.resource.kb_memory, id="keyboard")
             yield code_editor
         yield Footer()
 
