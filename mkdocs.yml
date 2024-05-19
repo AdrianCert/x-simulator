@@ -1,6 +1,6 @@
 site_name: X-Simulator
-repo_url: https://sourcecode02.de.bosch.com/projects/ASIOS/repos/auto-spdx-generator/
-repo_name: ASIOS/auto-spdx-generator
+repo_url: https://github.com/AdrianCert/x-simulator
+repo_name: x-simulator
 
 markdown_extensions:
   - admonition
@@ -50,8 +50,6 @@ theme:
 nav:
   - Home:
     - Overview: index.md
-    - Changelog: changelog.md
-  - ...
 
 plugins:
   - search
