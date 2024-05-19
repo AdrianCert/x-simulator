@@ -19,7 +19,8 @@ def on_write(key, value):
 data = HookedByteArray(20, write_callback=on_write)
 view = memoryview(data)[5:15]
 
-data[0:1] = [0xff, 0xee]
+data[0] = 0xFf
+data[0] = 0xe
 view[0] = 0x10
 view[3] = 0x20
 view[-1] = 0x30
