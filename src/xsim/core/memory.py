@@ -29,6 +29,7 @@ class Memory:
             raise ValueError(f"Invalid address: {address}")
         if address + size > self.size:
             raise ValueError(f"Invalid address range: {address} - {address + size}")
+        return True
 
     def get_limit_access_at_time(self, address, size: int = 1) -> int:
         bound = self.restricts["access_at_time"].overlap(address, address + size)
@@ -50,7 +51,7 @@ class Memory:
     def view(
         self, address: int, size: int = 1, restrict_access_at_time=None
     ) -> "Memory":
-        self.validate_address(address, size)
+        assert self.validate_address(address, size)
         memory_view = MemoryView(self, address, size, origin=self.origin)
         if restrict_access_at_time:
             memory_view.limit_access_at_time(
@@ -60,7 +61,7 @@ class Memory:
         return memory_view
 
     def read(self, address: int, size: int = 1) -> int:
-        self.validate_address(address, size)
+        assert self.validate_address(address, size)
         self.on_read_hook(address, size)
         size = self.get_limit_access_at_time(address, size)
         if size == 1:
@@ -69,7 +70,7 @@ class Memory:
             return int.from_bytes(self.data[address : address + size], self.endianess)
 
     def dump(self, size: int = 0, address: int = 0, bytes_per_row=16) -> str:
-        self.validate_address(address, size)
+        assert self.validate_address(address, size)
         slice = self.mv
         if address > 0:
             slice = self.mv[address:]
@@ -131,7 +132,7 @@ class Memory:
     def write(self, address: int, value: int, size: int = 1):
         size = self.get_limit_access_at_time(address, size)
 
-        self.validate_address(address, size)
+        assert self.validate_address(address, size)
         bytes = value.to_bytes(size, self.endianess)
         bytes_len = len(bytes)
         if bytes_len == 1:
