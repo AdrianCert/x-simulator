@@ -1,4 +1,4 @@
-# Welcome to MkDocs
+# XSIM
 
 This is the documentation for X-Simulator, a simulator of a computing system.
 
@@ -11,7 +11,7 @@ This is the documentation for X-Simulator, a simulator of a computing system.
 # Main Components Explanation
 We will now proceed to give a brief presentation of the essential modules in this project.
 
-### 1. The Procesor 
+### 1. The Procesor
 
 The role of a processor is to simulate the operations of a real-world processor. The processor is responsible for interpreting and executing program code, managing registers, accessing memory, and other tasks specific to data processing and instruction execution.
 
@@ -34,22 +34,22 @@ The Memory component in the project defines two main classes, Memory and MemoryV
 
 * The view method of the Memory class allows the creation of MemoryView objects, which represent subsets of the main memory. These subviews can be used to access and manipulate specific portions of system memory.
 
-```
-    def view(self, address: int, size: int = 1) -> "Memory":
-        self.validate_address(address, size)
-        memory_view = MemoryView(self, address, size)
-        self.sub_views[address : address + size] = memory_view
-        return memory_view
+```py
+def view(self, address: int, size: int = 1) -> "Memory":
+    self.validate_address(address, size)
+    memory_view = MemoryView(self, address, size)
+    self.sub_views[address : address + size] = memory_view
+    return memory_view
 ```
 
 * The validate_address method of the Memory class has the role of checking whether a specified address is valid within the memory space of the Memory object. This method receives two arguments: address (the address on which the validation is done) and optionally size (the size of the data to be accessed at that address).
 
-```
-    def validate_address(self, address: int, size: int = 1):
-        if address < 0 or address >= self.size:
-            raise ValueError(f"Invalid address: {address}")
-        if address + size > self.size:
-            raise ValueError(f"Invalid address range: {address} - {address + size}")
+```py
+def validate_address(self, address: int, size: int = 1):
+    if address < 0 or address >= self.size:
+        raise ValueError(f"Invalid address: {address}")
+    if address + size > self.size:
+        raise ValueError(f"Invalid address range: {address} - {address + size}")
 ```
 
 ### 3. The Peripheral Devices
@@ -68,7 +68,3 @@ The nested Grammar class defines the grammar rules for the assembly language usi
 - **parse:** This method parses the input text using the grammar defined in the Grammar class and returns the parse tree.
 
 - **loads/load:** These methods parse assembly code from either a string (`loads`) or a file (`load`). They internally call the parse method of the Grammar class to perform the parsing.
-
-
-
-
