@@ -27,13 +27,26 @@ dev = [
     "ruff>=0.4.4",
     "textual-dev>=1.5.1",
     "coverage[toml]>=7.5.1",
-    "nox==2024.4.15"
+    "nox==2024.4.15",
 ]
 
 [tool.coverage.report]
 show_missing = true
 fail_under = 10
-omit = ["*__main__.py", "*__init__.py", "src/xsim/app/**"]
+omit = [
+    "*__main__.py",
+    "*__init__.py",
+    "src/xsim/app/**",
+    "src/xsim/core/asm_parser.py",
+    "src/xsim/core/const.py",
+]
+exclude_also = [
+    "def __repr__",
+    "raise .*",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
 
 [build-system]
 requires = ["pdm-backend"]
