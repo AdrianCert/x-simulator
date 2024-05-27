@@ -27,7 +27,7 @@ class ProcessorRegisters:
         self.registers_addr = {}
         current_address = 0
         left_space = self.memory.size
-        left_mapped = 0
+        left_mapped = -1
         for seq, register in enumerate(registers or []):
             label = register["name"]
             size = register["size"]
@@ -43,7 +43,7 @@ class ProcessorRegisters:
             current_address += size
             left_space -= size
 
-        if left_mapped:
+        if left_mapped != -1:
             unmapped_registers = registers[left_mapped:]
             self.unmapped_memory = memory.Memory(
                 sum(reg["size"] for reg in unmapped_registers)
