@@ -21,7 +21,8 @@ class BasicProcessor(processor.ProcessorBase):
         self.pc = self.registers.take("pc")
         while True:
             current_address = self.pc.get()
-            if self.pc.get() >= len(self.program_data):
+            assert current_address >= 0
+            if current_address >= len(self.program_data):
                 break
             instruction_data = self.program_data[self.pc.get()]
             self.pc.set(current_address + 1)

@@ -204,6 +204,7 @@ class AssemblyParser:
 
     @classmethod
     def loads(cls, text, **kwargs):
+        assert "register_names" in kwargs
         return cls.Grammar.parse(text=text, **kwargs)
 
     @classmethod
