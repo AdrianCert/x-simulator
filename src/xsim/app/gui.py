@@ -332,7 +332,11 @@ class Simulator(App):
         )
 
 
-config = AppConfiguration.load("config.json")
-app = Simulator(config=config)
-if __name__ == "__main__":
+def main():
+    config = AppConfiguration.load("config.json")
+    app = Simulator(config=config)
     app.run()
+
+
+if __name__ == "__main__":
+    main()

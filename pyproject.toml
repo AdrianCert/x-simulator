@@ -33,6 +33,9 @@ docs = [
     "pymdown-extensions>=10.8.1",
 ]
 
+[project.scripts]
+xsim = "xsim.app.gui:main"
+
 [tool.coverage.report]
 show_missing = true
 fail_under = 10
