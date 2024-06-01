@@ -31,7 +31,9 @@ class TestInstructionSet(unittest.TestCase):
         self.instruction_set.instruction_set = {"ADD": instruction_mock}
         result = self.instruction_set.execute("ADD", arg1=1, arg2=2)
         self.assertEqual(result, "Result")
-        instruction_mock.execute.assert_called_once_with(self.instruction_set.context, {"arg1": 1, "arg2": 2})
+        instruction_mock.execute.assert_called_once_with(
+            self.instruction_set.context, {"arg1": 1, "arg2": 2}
+        )
 
     def test_execute_non_existing_instruction(self):
         # Test executing a non-existing instruction

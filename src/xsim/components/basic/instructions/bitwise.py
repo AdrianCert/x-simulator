@@ -5,8 +5,7 @@ from .base import BaseInstruction
 
 class BitwiseInstructionSet(BaseInstruction):
     @classmethod
-    def compute_result(cls, context, source, destination):
-        ...
+    def compute_result(cls, context, source, destination): ...
 
     @classmethod
     def execute(cls, context: processor.ProcessorBase, source, destination):

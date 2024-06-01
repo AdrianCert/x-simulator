@@ -5,8 +5,7 @@ from .base import BaseInstruction
 
 class ArithmeticInstructionSet(BaseInstruction):
     @classmethod
-    def arithmetic_compute(cls, context, source, destination):
-        ...
+    def arithmetic_compute(cls, context, source, destination): ...
 
     @classmethod
     def flags_compute(cls, result):

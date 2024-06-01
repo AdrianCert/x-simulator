@@ -1,10 +1,11 @@
 import unittest
+
 import coverage
+
 from src.xsim.core.asm_parser import AssemblyTransformer
 
 
 class TestAssemblyTransformer(unittest.TestCase):
-
     def setUp(self):
         self.transformer = AssemblyTransformer(register_names=["r1", "r2"])
 
@@ -45,7 +46,10 @@ class TestAssemblyTransformer(unittest.TestCase):
 
     def test_instruction(self):
         result = self.transformer.instruction("MOV", ("REG", "r1"), ("REG", "r2"))
-        expected = {"name": "MOV", "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")}}
+        expected = {
+            "name": "MOV",
+            "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")},
+        }
         self.assertEqual(result, expected)
 
     def test_mul(self):
@@ -63,25 +67,42 @@ class TestAssemblyTransformer(unittest.TestCase):
         self.assertEqual(result, ("REG", "r1"))
 
     def test_instructions(self):
-        result = self.transformer.instructions({"name": "NOP", "params": {}}, {"name": "MOV", "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")}})
-        expected = [{"name": "NOP", "params": {}}, {"name": "MOV", "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")}}]
+        result = self.transformer.instructions(
+            {"name": "NOP", "params": {}},
+            {
+                "name": "MOV",
+                "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")},
+            },
+        )
+        expected = [
+            {"name": "NOP", "params": {}},
+            {
+                "name": "MOV",
+                "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")},
+            },
+        ]
         self.assertEqual(result, expected)
 
     def test_start(self):
-        result = self.transformer.start([{"name": "NOP", "params": {}}, {"name": "MOV", "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")}}])
-        expected = [{"name": "NOP", "params": {}}, {"name": "MOV", "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")}}]
+        result = self.transformer.start(
+            [
+                {"name": "NOP", "params": {}},
+                {
+                    "name": "MOV",
+                    "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")},
+                },
+            ]
+        )
+        expected = [
+            {"name": "NOP", "params": {}},
+            {
+                "name": "MOV",
+                "params": {"destination": ("REG", "r1"), "source": ("REG", "r2")},
+            },
+        ]
         self.assertEqual(result, expected)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
     cov = coverage.Coverage()
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,21 @@
 import unittest
 from unittest.mock import MagicMock
+
 from xsim.core import processor
-from src.xsim.components.basic.instructions.base import BaseInstruction, Nop, Halt
+
+from src.xsim.components.basic.instructions.base import BaseInstruction, Halt, Nop
 
 
 class TestBaseInstruction(unittest.TestCase):
-
     def setUp(self):
         self.context = MagicMock(spec=processor.ProcessorBase)
         self.context.memory = MagicMock()
         self.context.registers = {}
 
     def test_compute_require_size_addr(self):
-        size = BaseInstruction.compute_require_size(self.context, "ADDR", ("REG", "eax"))
+        size = BaseInstruction.compute_require_size(
+            self.context, "ADDR", ("REG", "eax")
+        )
         self.assertEqual(size, 2)
 
     def test_compute_require_size_reg(self):
@@ -25,12 +28,16 @@ class TestBaseInstruction(unittest.TestCase):
         self.assertEqual(size, 1)
 
     def test_resolve_operand_const(self):
-        operand_value = BaseInstruction.resolve_operand(self.context, "CONST", 123, size=1)
+        operand_value = BaseInstruction.resolve_operand(
+            self.context, "CONST", 123, size=1
+        )
         self.assertEqual(operand_value, 123)
 
     def test_resolve_operand_reg(self):
         self.context.registers = {"eax": 10}
-        operand_value = BaseInstruction.resolve_operand(self.context, "REG", "eax", size=1)
+        operand_value = BaseInstruction.resolve_operand(
+            self.context, "REG", "eax", size=1
+        )
         self.assertEqual(operand_value, 10)
 
     def test_resolve_operand_default(self):
@@ -40,7 +47,6 @@ class TestBaseInstruction(unittest.TestCase):
 
 
 class TestNopInstruction(unittest.TestCase):
-
     def test_nop_execute(self):
         context = MagicMock(spec=processor.ProcessorBase)
         Nop.execute(context)
@@ -48,12 +54,11 @@ class TestNopInstruction(unittest.TestCase):
 
 
 class TestHaltInstruction(unittest.TestCase):
-
     def test_halt_execute(self):
         context = MagicMock(spec=processor.ProcessorBase)
         Halt.execute(context)
         self.assertTrue(context.halt)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

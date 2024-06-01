@@ -6,7 +6,6 @@ from xsim.core.processor import ProcessorBase, ProcessorRegister, ProcessorRegis
 
 
 class TestProcessorRegister(unittest.TestCase):
-
     def test_init(self):
         register = ProcessorRegister("r0", 2)
         self.assertEqual(register.name, "r0")
@@ -33,7 +32,6 @@ class TestProcessorRegister(unittest.TestCase):
 
 
 class TestProcessorRegisters(unittest.TestCase):
-
     def setUp(self):
         self.memory_view = Memory(100)
         self.registers = [
@@ -74,7 +72,6 @@ class TestProcessorRegisters(unittest.TestCase):
 
 
 class TestProcessorBase(unittest.TestCase):
-
     def setUp(self):
         self.processor = ProcessorBase(
             2048 * 2,

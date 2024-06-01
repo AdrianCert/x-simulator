@@ -1,11 +1,16 @@
 import unittest
 from unittest.mock import MagicMock, create_autospec
-from xsim.core import const, processor
-from src.xsim.components.basic.instructions.arithmetic import Add, Sub, Cmp, ArithmeticInstructionSet
+
+from xsim.core import processor
+
+from src.xsim.components.basic.instructions.arithmetic import (
+    Add,
+    Cmp,
+    Sub,
+)
 
 
 class TestArithmeticInstructionSet(unittest.TestCase):
-
     def setUp(self):
         self.context = create_autospec(processor.ProcessorBase)
         self.context.memory = MagicMock()
@@ -25,8 +30,12 @@ class TestArithmeticInstructionSet(unittest.TestCase):
         Add.resolve_operand = MagicMock(side_effect=[3, 2])
         Add.compute_require_size = MagicMock(return_value=2)
 
-        self.context.registers.__getitem__.side_effect = lambda key: 2 if key == "ebx" else None
-        self.context.registers.__setitem__.side_effect = lambda key, value: self.context.registers.__dict__.update({key: value})
+        self.context.registers.__getitem__.side_effect = (
+            lambda key: 2 if key == "ebx" else None
+        )
+        self.context.registers.__setitem__.side_effect = (
+            lambda key, value: self.context.registers.__dict__.update({key: value})
+        )
 
         Add.execute(self.context, source=("REG", "eax"), destination=("REG", "ebx"))
         self.assertEqual(self.context.registers.__dict__["ebx"], 5)
@@ -45,8 +54,12 @@ class TestArithmeticInstructionSet(unittest.TestCase):
         Sub.resolve_operand = MagicMock(side_effect=[2, 5])
         Sub.compute_require_size = MagicMock(return_value=2)
 
-        self.context.registers.__getitem__.side_effect = lambda key: 5 if key == "ebx" else None
-        self.context.registers.__setitem__.side_effect = lambda key, value: self.context.registers.__dict__.update({key: value})
+        self.context.registers.__getitem__.side_effect = (
+            lambda key: 5 if key == "ebx" else None
+        )
+        self.context.registers.__setitem__.side_effect = (
+            lambda key, value: self.context.registers.__dict__.update({key: value})
+        )
 
         Sub.execute(self.context, source=("REG", "eax"), destination=("REG", "ebx"))
         self.assertEqual(self.context.registers.__dict__["ebx"], 3)
@@ -83,10 +96,12 @@ class TestArithmeticInstructionSet(unittest.TestCase):
         Add.compute_require_size = MagicMock(return_value=2)
 
         try:
-            Add.execute(self.context, source=("REG", "eax"), destination=("UNKNOWN", "ebx"))
+            Add.execute(
+                self.context, source=("REG", "eax"), destination=("UNKNOWN", "ebx")
+            )
         except ValueError as e:
             self.assertEqual(str(e), "Unknown destination type: UNKNOWN")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

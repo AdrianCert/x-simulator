@@ -11,11 +11,6 @@ dependencies = [
     "intervaltree>=3.1.0",
     "lark>=1.1.9",
     "textual[syntax]>=0.59.0",
-    "mkdocs>=1.6.0",
-    "mkdocs-awesome-pages-plugin>=2.9.2",
-    "mkdocs-kroki-plugin>=0.7.1",
-    "mkdocs-material>=9.5.21",
-    "pymdown-extensions>=10.8.1",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -25,9 +20,17 @@ license = { text = "MIT" }
 dev = [
     "pre-commit>=3.7.1",
     "ruff>=0.4.4",
-    "textual-dev>=1.5.1",
-    "coverage[toml]>=7.5.1",
     "nox==2024.4.15",
+]
+tests = [
+    "coverage[toml]>=7.5.1",
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-awesome-pages-plugin>=2.9.2",
+    "mkdocs-kroki-plugin>=0.7.1",
+    "mkdocs-material>=9.5.21",
+    "pymdown-extensions>=10.8.1",
 ]
 
 [tool.coverage.report]
@@ -53,4 +56,4 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.ruff.lint]
-extend-select = ["C", "N", "SIM", "PTH", "I", "PL", "FURB"]
+extend-select = ["C", "N", "SIM", "PTH", "I", "PL"]

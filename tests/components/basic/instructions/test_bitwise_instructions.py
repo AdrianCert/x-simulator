@@ -1,11 +1,19 @@
 import unittest
 from unittest.mock import MagicMock
+
 from xsim.core import processor
-from src.xsim.components.basic.instructions.bitwise import BitwiseInstructionSet, And, Or, Xor, Not, Shl, Shr
+
+from src.xsim.components.basic.instructions.bitwise import (
+    And,
+    Not,
+    Or,
+    Shl,
+    Shr,
+    Xor,
+)
 
 
 class TestBitwiseInstructionSet(unittest.TestCase):
-
     def setUp(self):
         self.context = MagicMock(spec=processor.ProcessorBase)
         self.context.memory = MagicMock()
@@ -60,5 +68,5 @@ class TestBitwiseInstructionSet(unittest.TestCase):
         self.assertEqual(self.context.registers["ebx"], 2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

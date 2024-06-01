@@ -1,11 +1,18 @@
 import unittest
 from unittest.mock import MagicMock
+
 from xsim.core import processor
-from src.xsim.components.basic.instructions.jumps import Jmp, Jz, Jeq, Jne, Jnz, Jl, Jg, Jge, Jle
+
+from src.xsim.components.basic.instructions.jumps import (
+    Jeq,
+    Jmp,
+    Jne,
+    Jnz,
+    Jz,
+)
 
 
 class TestJumpInstructions(unittest.TestCase):
-
     def setUp(self):
         self.context = MagicMock(spec=processor.ProcessorBase)
         self.context.registers = {"PC": 0, "SREG": 0}
@@ -54,5 +61,6 @@ class TestJumpInstructions(unittest.TestCase):
 
     # Se pot adăuga și alte teste pentru celelalte instrucțiuni...
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -5,8 +5,7 @@ from .base import BaseInstruction
 
 class JumpInstruction(BaseInstruction):
     @classmethod
-    def check_condition(cls, context: processor.ProcessorBase):
-        ...
+    def check_condition(cls, context: processor.ProcessorBase): ...
 
     @classmethod
     def execute(cls, context: processor.ProcessorBase, address):
