@@ -1,6 +1,70 @@
 # XSIM
 
-This is the documentation for X-Simulator, a simulator of a computing system.
+This is the documentation for x-simulator, a simulator of a computing system.
+
+## Requirements
+
+Before installing and using x-simulator, ensure your system meets the following requirements:
+
+1. **Python** x-simulator is a python package and requires Python 3.10 or later. You can download Python from the official Python website [here](https://www.python.org/downloads/).
+
+2. **pip** pip is a package manager for Python and is used to install python packages. If you installed Python from the official website, pip should have been installed along with it. If not, you can follow the instructions [here](https://pip.pypa.io/en/stable/installation/) to install pip. Other tools with same capability can be used.
+
+3. **Operating System** x-simulator is platform-independent and should work on any operating system that supports Python. This includes Windows, macOS, and Linux.
+
+4. **Hardware:** The hardware requirements for x-Simulator depend on the complexity of the simulations you want to run. For basic simulations, a standard consumer-grade computer should be sufficient. For more complex simulations, a high-performance computer with a fast processor and a large amount of RAM might be necessary.
+
+Please ensure that your system meets these requirements before proceeding with the installation.
+
+## Installing
+
+You can install `x-simulator` using pip, a package manager for Python. Follow these steps:
+
+1. **Open your terminal:** You'll run the installation command in your terminal.
+
+2. **Run the installation command:** Enter the following command in your terminal and press Enter:
+
+```bash
+pip install x-simulator
+```
+
+Alternatively, the installation process can be done with the source file directly. After cloning this repository perform `pip install <location/to/the/repo>`
+
+```bash
+git clone https://github.com/AdrianCert/x-simulator.git
+```
+
+```bash
+pip install x-simulator
+```
+
+3. **Wait for the installation to complete:** pip will download and install x-simulator and its dependencies. This might take a few minutes.
+
+4. **Verify the installation:** To make sure x-simulator was installed correctly, start a Python interactive session by typing python in your terminal and pressing Enter. Then, try to import x-simulator module by typing `import xsim` (or the correct import name if it's different) and pressing Enter. If you don't see any error messages, the installation was successful.
+
+## Development Installation
+
+If you want to contribute to the development of `x-simulator`, you'll need to clone the repository and install the dependencies in a virtual environment. Here are the steps:
+
+1. **Clone the repository:** Open your terminal, navigate to the directory where you want to clone the repository, and run the following command:
+
+```bash
+git clone https://github.com/AdrianCert/x-simulator.git
+```
+2. **Navigate to the cloned repository:** Use the following command to navigate to the x-simulator directory:
+
+```bash
+cd x-simulator
+```
+
+3. **Run the installation command:** Enter the following command in your terminal and press Enter:
+
+
+```bash
+pip install -e .
+```
+
+As note, in order to be able to decouple usage dependencies in the package and the others, separate groups of dependencies were put into modules. You can install those adjusting the syntax `.` -> `.[dev]` or `.[test]` or `.[test,dev]` (or separated via comma). see [pep631](https://peps.python.org/pep-0631/)
 
 ## The main components
 
